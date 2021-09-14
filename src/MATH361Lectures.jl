@@ -1,4 +1,4 @@
-module NumericalAnalysis
+module MATH361Lectures
 
 using LinearAlgebra
 
