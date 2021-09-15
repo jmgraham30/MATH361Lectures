@@ -2,7 +2,7 @@ module MATH361Lectures
 
 using LinearAlgebra
 
-export forwardsub, backsub, rowopmat, lufact, luppfact
+export forwardsub, backsub, rowopmat, lufact, luppfact, chfact
 
 """
     forwardsub(L,b)
@@ -159,6 +159,34 @@ function luppfact(A)
      end
      return L, U, P
  end
+
+ """
+    chfact(A)
+
+Constructs the Cholesky factorization of a SPD matrix \$A\$.
+
+# Example
+```julia-repl
+julia> A = [5.0 7.0 1.0;7.0 14.0 -1.0;1.0 -1.0 2.0]
+julia> L = chfact(A)
+```
+ 
+"""
+function chfact(A)
+   n = size(A)[1];
+   A = Matrix{Float64}(A);
+   L = Matrix{Float64}(I,n,n); # initialize L
+   for k=1:n
+     L[k,k] = sqrt(A[k,k] - dot(L[k,1:(k-1)],L[k,1:(k-1)]));
+     for i=(k+1):n
+       L[i,k] = (A[i,k] - dot(L[i,1:(k-1)],L[k,1:(k-1)]))/L[k,k];
+     end
+   end
+
+
+   return L
+
+end
 
 
 end
